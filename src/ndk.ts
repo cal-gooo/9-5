@@ -1,36 +1,36 @@
 // components/ndk.tsx
-'use client';
+"use client";
 
 // Here we will initialize NDK and configure it to be available throughout the application
-import NDK from '@nostr-dev-kit/ndk';
+import NDK from "@nostr-dev-kit/ndk";
 
 // An optional in-browser cache adapter
-import NDKCacheAdapterDexie from '@nostr-dev-kit/ndk-cache-dexie';
+import NDKCacheAdapterDexie from "@nostr-dev-kit/ndk-cache-dexie";
 import {
-	NDKSessionLocalStorage,
-	useNDKInit,
-	useNDKSessionMonitor,
-} from '@nostr-dev-kit/ndk-hooks';
-import { useEffect } from 'react';
+  NDKSessionLocalStorage,
+  useNDKInit,
+  useNDKSessionMonitor,
+} from "@nostr-dev-kit/ndk-hooks";
+import { useEffect } from "react";
 
 // Define explicit relays or use defaults
 const explicitRelayUrls = [
-	'wss://relay.primal.net',
-	'wss://nos.lol',
-	'wss://purplepag.es',
+  "wss://relay.primal.net",
+  "wss://nos.lol",
+  "wss://purplepag.es",
 ];
 
 // Setup Dexie cache adapter (Client-side only)
 let cacheAdapter: NDKCacheAdapterDexie | undefined;
-if (typeof window !== 'undefined') {
-	cacheAdapter = new NDKCacheAdapterDexie({ dbName: '9-5' });
+if (typeof window !== "undefined") {
+  cacheAdapter = new NDKCacheAdapterDexie({ dbName: "9-5" });
 }
 
 // Create the singleton NDK instance
-const ndk = new NDK({ explicitRelayUrls, cacheAdapter });
+export const ndk = new NDK({ explicitRelayUrls, cacheAdapter });
 
 // Connect to relays on initialization (client-side)
-if (typeof window !== 'undefined') ndk.connect();
+if (typeof window !== "undefined") ndk.connect();
 
 // Use the browser's localStorage for session storage
 const sessionStorage = new NDKSessionLocalStorage();
@@ -43,16 +43,16 @@ const sessionStorage = new NDKSessionLocalStorage();
  * @returns
  */
 export function NDKHeadless() {
-	const initNDK = useNDKInit();
+  const initNDK = useNDKInit();
 
-	useNDKSessionMonitor(sessionStorage, {
-		profile: true, // automatically fetch profile information for the active user
-		follows: true, // automatically fetch follows of the active user
-	});
+  useNDKSessionMonitor(sessionStorage, {
+    profile: true, // automatically fetch profile information for the active user
+    follows: true, // automatically fetch follows of the active user
+  });
 
-	useEffect(() => {
-		if (ndk) initNDK(ndk);
-	}, [initNDK]);
+  useEffect(() => {
+    if (ndk) initNDK(ndk);
+  }, [initNDK]);
 
-	return null;
+  return null;
 }

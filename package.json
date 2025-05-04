@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && prettier --write 'src/**/*.{ts,tsx}'",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,14 +14,18 @@
     "@nostr-dev-kit/ndk-hooks": "^1.1.23",
     "@preact/signals": "^2.0.4",
     "@tailwindcss/vite": "^4.1.5",
+    "crypto-js": "^4.2.0",
     "preact": "^10.26.4",
     "react-pull-to-refresh": "^2.0.1",
     "react-router-dom": "^7.5.3",
     "tailwindcss": "^4.1.5",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.1",
+    "@types/crypto-js": "^4.2.2",
+    "prettier": "3.5.3",
     "typescript": "~5.7.2",
     "vite": "^6.3.1",
     "vite-svg-loader": "^5.1.0"
