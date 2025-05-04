@@ -1,4 +1,19 @@
 @import "tailwindcss";
-@theme {
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
+html, body {
+  overscroll-behavior-y: contain; /* Prevent native pull-to-refresh conflicts */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }

@@ -1,51 +1,53 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+} from 'react-router-dom';
 import NavigationBar from './components/NavigationBar';
-import HomePage from './pages/HomePage';
-
-// function LogoutButton() {
-// 	const logout = useNDKSessionLogout();
-// 	const currentUser = useNDKCurrentUser();
-
-// 	if (!currentUser) {
-// 		return null; // No user is logged in
-// 	}
-
-// 	const handleLogout = () => {
-// 		logout();
-// 		console.log('User logged out successfully');
-// 	};
-
-// 	return (
-// 		<button
-// 			onClick={handleLogout}
-// 			style={{
-// 				marginTop: '20px',
-// 				padding: '10px',
-// 				backgroundColor: '#dc3545',
-// 				color: '#fff',
-// 				border: 'none',
-// 				borderRadius: '5px',
-// 				cursor: 'pointer',
-// 			}}
-// 		>
-// 			Log Out
-// 		</button>
-// 	);
-// }
+import HomePage from './pages/Home';
+import Wallet from './pages/Wallet';
+import Messages from './pages/Messages';
+import Profile from './pages/Profile';
+import Post from './pages/Post';
+import { Login } from './pages/Login';
+import { NDKHeadless } from './ndk';
+import { useEffect, useState } from 'preact/hooks';
+import { useNDKCurrentUser } from '@nostr-dev-kit/ndk-hooks';
 
 function App() {
-	// Conditionally render the Signin page or the main app content
+	const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication logic
+	const currentUser = useNDKCurrentUser();
+	
+	// Simulate checking login status (replace with real logic)
+	useEffect(() => {
+		setIsLoggedIn(!!currentUser);
+	}, [currentUser]);
 	return (
-		<Router>
-			<div className='pb-16 bg-sky-800 text-white'>
-				<Routes>
-					<Route path='/page1' element={<HomePage />} />
-					<Route path='/page2' element={<div>page 2</div>} />
-					<Route path='/page3' element={<div>page 3</div>} />
-				</Routes>
-				<NavigationBar />
-			</div>
-		</Router>
+		<div>
+			<NDKHeadless />
+			<Router>
+				<div className='min-h-screen bg-sky-800 text-white'>
+					{!isLoggedIn ? (
+						<Routes>
+							<Route path='*' element={<Navigate to='/' />} />
+							<Route path='/' element={<Login />} />
+						</Routes>
+					) : (
+						<Routes>
+							<Route path='*' element={<Navigate to='/home' />} />
+							<Route path='/home' element={<HomePage />} />
+							<Route path='/following' element={<div>following</div>} />
+							<Route path='/wallet' element={<Wallet />} />
+							<Route path='/post' element={<Post />} />
+							<Route path='/messages' element={<Messages />} />
+							<Route path='/profile' element={<Profile />} />
+						</Routes>
+					)}
+					{isLoggedIn && <NavigationBar />}
+				</div>
+			</Router>
+		</div>
 	);
 }
 
