@@ -192,7 +192,7 @@ export default function Wallet() {
             Transactions
           </h2>
 
-          <div className={"mt-4 h-dvh overflow-y-scroll"}>
+          <div className={"mt-4 h-dvh"}>
             <ul className="mt-4 text-sky-800">
               {transactions.length > 0 ? (
                 transactions.map((tx, index) => (

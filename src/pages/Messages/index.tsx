@@ -21,7 +21,7 @@ export default function Messages() {
       <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">
         Direct Messages
       </h1>
-      <ul className="space-y-4 h-dvh overflow-y-scroll">
+      <ul className="space-y-4 h-dvh">
         {messages.map((message) => (
           <li
             key={message.id}
