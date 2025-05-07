@@ -2,6 +2,7 @@ import CryptoJS from "crypto-js";
 import {
   useNDKSessionLogin,
   useNDKCurrentUser,
+  NDKSessionLocalStorage,
 } from "@nostr-dev-kit/ndk-hooks";
 import { NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
 import { useCallback, useEffect, useState } from "preact/hooks";
@@ -23,6 +24,7 @@ export function Login() {
   const currentUser = useNDKCurrentUser();
   const [loading, setLoading] = useState(true);
   const setSigner = useCurrentSigner((state) => state.setSigner);
+  const localStorage = new NDKSessionLocalStorage();
 
   // Encrypt the private key
   const encryptPrivateKey = (privateKey: string, password: string): string => {

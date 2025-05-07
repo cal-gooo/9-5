@@ -10,10 +10,13 @@
 }
 
 
-html, body {
-  overscroll-behavior-y: contain; /* Prevent native pull-to-refresh conflicts */
+html,
+body {
+  overscroll-behavior: none; /* Prevent native pull-to-refresh conflicts */
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
+  margin: 0; /* Ensure no default margin */
+  height: 100%; /* Ensure the body fills the viewport */
 }

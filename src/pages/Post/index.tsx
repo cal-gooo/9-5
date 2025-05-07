@@ -1,8 +1,8 @@
-import { useState } from "preact/hooks";
-import BackButton from "../../components/Back";
+import { useState } from 'preact/hooks';
+import BackButton from '../../components/Back';
 
 export default function Post() {
-  const [postContent, setPostContent] = useState("");
+	const [postContent, setPostContent] = useState('');
 
   const handlePostSubmit = () => {
     if (postContent.trim() === "") {
@@ -14,7 +14,7 @@ export default function Post() {
     setPostContent(""); // Clear the textarea after submission
   };
   return (
-    <div className="h-screen bg-gray-100 p-4 flex flex-col items-center">
+    <div className=" bg-sky-800 p-4 flex flex-col items-center">
       {/* Back Button */}
       <BackButton />
       <h1 className="text-2xl font-bold mb-4 text-gray-800">Write a Post</h1>
