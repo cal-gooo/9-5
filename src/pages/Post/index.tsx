@@ -1,8 +1,8 @@
-import { useState } from 'preact/hooks';
-import BackButton from '../../components/Back';
+import { useState } from "preact/hooks";
+import BackButton from "../../components/Back";
 
 export default function Post() {
-	const [postContent, setPostContent] = useState('');
+  const [postContent, setPostContent] = useState("");
 
   const handlePostSubmit = () => {
     if (postContent.trim() === "") {

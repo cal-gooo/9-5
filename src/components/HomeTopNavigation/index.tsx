@@ -4,7 +4,7 @@ export default function HomeTopNavigation() {
   const [activeTab, setActiveTab] = useState("for-you"); // Default active tab
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-sky-800 shadow-md">
+    <nav className="fixed top-0 left-0 w-full bg-sky-800 shadow-md z-10">
       <div className="flex justify-around items-center font-bold">
         {/* Following Tab */}
         <div

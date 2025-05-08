@@ -1,20 +1,20 @@
 export default function Messages() {
-	const messages = [
-		{ id: 1, sender: 'Alice', content: 'Hey, how are you?', time: '10:30 AM' },
-		{ id: 2, sender: 'Bob', content: 'Let’s catch up later!', time: '9:15 AM' },
-		{
-			id: 3,
-			sender: 'Charlie',
-			content: 'Can you send me the files?',
-			time: 'Yesterday',
-		},
-		{
-			id: 4,
-			sender: 'Diana',
-			content: 'Great job on the project!',
-			time: '2 days ago',
-		},
-	];
+  const messages = [
+    { id: 1, sender: "Alice", content: "Hey, how are you?", time: "10:30 AM" },
+    { id: 2, sender: "Bob", content: "Let’s catch up later!", time: "9:15 AM" },
+    {
+      id: 3,
+      sender: "Charlie",
+      content: "Can you send me the files?",
+      time: "Yesterday",
+    },
+    {
+      id: 4,
+      sender: "Diana",
+      content: "Great job on the project!",
+      time: "2 days ago",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-sky-800 p-4">

@@ -43,139 +43,139 @@ export default function Wallet() {
     }
   };
 
-	// Decoupled wallet connection logic
-	const connectWallet = async (pairingCode: string) => {
-		try {
-			// Initialize NWC wallet with the pairing code
-			const wallet = new NDKNWCWallet(ndk, {
-				pairingCode,
-				timeout: 30000, // Optional timeout for operations
-			});
+  // Decoupled wallet connection logic
+  const connectWallet = async (pairingCode: string) => {
+    try {
+      // Initialize NWC wallet with the pairing code
+      const wallet = new NDKNWCWallet(ndk, {
+        pairingCode,
+        timeout: 30000, // Optional timeout for operations
+      });
 
-			// Set up event listeners
-			wallet.on('ready', () => {
-				console.log('NWC wallet is ready for zapping');
-			});
+      // Set up event listeners
+      wallet.on("ready", () => {
+        console.log("NWC wallet is ready for zapping");
+      });
 
-			wallet.on('balance_updated', (balance) => {
-				console.log('Balance updated:', balance?.amount || 0, 'sats');
-				setBalance(balance?.amount || 0);
-			});
+      wallet.on("balance_updated", (balance) => {
+        console.log("Balance updated:", balance?.amount || 0, "sats");
+        setBalance(balance?.amount || 0);
+      });
 
-			// Assign wallet to NDK instance for zapping
-			ndk.wallet = wallet;
-			setActiveWallet(wallet);
+      // Assign wallet to NDK instance for zapping
+      ndk.wallet = wallet;
+      setActiveWallet(wallet);
 
-			// Save wallet to Zustand store
-			setWallet(wallet);
-			const encryptedPairingCode = encryptPairingCode(
-				pairingCode,
-				encryptionKey
-			);
-			// Save pairing code to localStorage
-			localStorage.setItem('ndkWalletPairingCode', encryptedPairingCode);
+      // Save wallet to Zustand store
+      setWallet(wallet);
+      const encryptedPairingCode = encryptPairingCode(
+        pairingCode,
+        encryptionKey,
+      );
+      // Save pairing code to localStorage
+      localStorage.setItem("ndkWalletPairingCode", encryptedPairingCode);
 
-			// Wait for wallet to be ready
-			if (wallet.status !== NDKWalletStatus.READY) {
-				await new Promise<void>((resolve) => {
-					wallet.once('ready', () => resolve());
-				});
-			}
+      // Wait for wallet to be ready
+      if (wallet.status !== NDKWalletStatus.READY) {
+        await new Promise<void>((resolve) => {
+          wallet.once("ready", () => resolve());
+        });
+      }
 
-			console.log('NWC wallet connected successfully');
+      console.log("NWC wallet connected successfully");
 
-			// Fetch and set transactions
-			const fetchedTransactions = await wallet.listTransactions();
-			setTransactions(fetchedTransactions.transactions);
-		} catch (err) {
-			console.error('Failed to connect wallet:', err);
-			throw err;
-		}
-	};
+      // Fetch and set transactions
+      const fetchedTransactions = await wallet.listTransactions();
+      setTransactions(fetchedTransactions.transactions);
+    } catch (err) {
+      console.error("Failed to connect wallet:", err);
+      throw err;
+    }
+  };
 
-	// Handle "Connect Wallet" button click
-	const handleConnectWallet = async () => {
-		setConnecting(true);
-		setError(null);
+  // Handle "Connect Wallet" button click
+  const handleConnectWallet = async () => {
+    setConnecting(true);
+    setError(null);
 
-		try {
-			// Read the pairing code from the clipboard
-			const pairingCode = await navigator.clipboard.readText();
-			if (!pairingCode) {
-				throw new Error(
-					'Clipboard is empty. Please copy the pairing code first.'
-				);
-			}
+    try {
+      // Read the pairing code from the clipboard
+      const pairingCode = await navigator.clipboard.readText();
+      if (!pairingCode) {
+        throw new Error(
+          "Clipboard is empty. Please copy the pairing code first.",
+        );
+      }
 
-			// Use the decoupled connectWallet function
-			await connectWallet(pairingCode);
-		} catch (err) {
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError('Failed to connect wallet.');
-			}
-		} finally {
-			setConnecting(false);
-		}
-	};
-	const encryptedPairingCode = localStorage.getItem('ndkWalletPairingCode');
-	// Reconnect wallet on page refresh
-	useEffect(() => {
-		if (wallet) {
-			// Wallet already exists in Zustand store
-			setActiveWallet(wallet);
+      // Use the decoupled connectWallet function
+      await connectWallet(pairingCode);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Failed to connect wallet.");
+      }
+    } finally {
+      setConnecting(false);
+    }
+  };
+  const encryptedPairingCode = localStorage.getItem("ndkWalletPairingCode");
+  // Reconnect wallet on page refresh
+  useEffect(() => {
+    if (wallet) {
+      // Wallet already exists in Zustand store
+      setActiveWallet(wallet);
 
-			// Fetch and set transactions if not already loaded
-			if (transactions.length === 0) {
-				wallet
-					.listTransactions()
-					.then((result) => setTransactions(result.transactions));
-			}
-			return;
-		} else {
-			// Try to load wallet from localStorage
+      // Fetch and set transactions if not already loaded
+      if (transactions.length === 0) {
+        wallet
+          .listTransactions()
+          .then((result) => setTransactions(result.transactions));
+      }
+      return;
+    } else {
+      // Try to load wallet from localStorage
 
-			if (encryptedPairingCode) {
-				// Reconnect the wallet
-				try {
-					const pairingCode = decryptPairingCode(
-						encryptedPairingCode,
-						encryptionKey
-					);
-					if (!pairingCode) {
-						throw new Error('Failed to decrypt pairing code.');
-					}
+      if (encryptedPairingCode) {
+        // Reconnect the wallet
+        try {
+          const pairingCode = decryptPairingCode(
+            encryptedPairingCode,
+            encryptionKey,
+          );
+          if (!pairingCode) {
+            throw new Error("Failed to decrypt pairing code.");
+          }
 
-					const restoredWallet = new NDKNWCWallet(ndk, {
-						pairingCode: pairingCode,
-						timeout: 30000,
-					});
+          const restoredWallet = new NDKNWCWallet(ndk, {
+            pairingCode: pairingCode,
+            timeout: 30000,
+          });
 
-					// Set up event listeners for the restored wallet
-					restoredWallet.on('ready', () => {
-						console.log('Restored wallet is ready for zapping');
-					});
+          // Set up event listeners for the restored wallet
+          restoredWallet.on("ready", () => {
+            console.log("Restored wallet is ready for zapping");
+          });
 
-					restoredWallet.on('balance_updated', (balance) => {
-						setBalance(balance?.amount || 0);
-					});
+          restoredWallet.on("balance_updated", (balance) => {
+            setBalance(balance?.amount || 0);
+          });
 
-					ndk.wallet = restoredWallet;
-					setActiveWallet(restoredWallet);
-					setWallet(restoredWallet);
+          ndk.wallet = restoredWallet;
+          setActiveWallet(restoredWallet);
+          setWallet(restoredWallet);
 
-					// Fetch and set transactions
-					restoredWallet
-						.listTransactions()
-						.then((result) => setTransactions(result.transactions));
-					setConnecting(false);
-				} catch (err) {
-					console.error('Failed to reconnect wallet:', err);
-				}
-			}
-		}
-	}, []);
+          // Fetch and set transactions
+          restoredWallet
+            .listTransactions()
+            .then((result) => setTransactions(result.transactions));
+          setConnecting(false);
+        } catch (err) {
+          console.error("Failed to reconnect wallet:", err);
+        }
+      }
+    }
+  }, []);
 
   if (activeWallet?.status === NDKWalletStatus.READY) {
     return (
@@ -223,31 +223,31 @@ export default function Wallet() {
     );
   }
 
-	if (!encryptedPairingCode) {
-		return (
-			<div className='flex flex-col items-center justify-center bg-sky-800 h-dvh'>
-				<button
-					className='px-8 py-4 bg-lime-500 text-white text-lg font-bold rounded-md shadow-md hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400 focus:ring-offset-2'
-					onClick={handleConnectWallet}
-					disabled={connecting}
-				>
-					{connecting ? 'Connecting...' : 'Connect Wallet'}
-				</button>
-				<p className='mt-4 text-white'>
-					Wallet needs to support Nostr Wallet Connect (NWC)
-				</p>
-				{error && <p className='mt-4 text-red-500'>{error}</p>}
-			</div>
-		);
-	}
+  if (!encryptedPairingCode) {
+    return (
+      <div className="flex flex-col items-center justify-center bg-sky-800 h-dvh">
+        <button
+          className="px-8 py-4 bg-lime-500 text-white text-lg font-bold rounded-md shadow-md hover:bg-lime-600 focus:outline-none focus:ring-2 focus:ring-lime-400 focus:ring-offset-2"
+          onClick={handleConnectWallet}
+          disabled={connecting}
+        >
+          {connecting ? "Connecting..." : "Connect Wallet"}
+        </button>
+        <p className="mt-4 text-white">
+          Wallet needs to support Nostr Wallet Connect (NWC)
+        </p>
+        {error && <p className="mt-4 text-red-500">{error}</p>}
+      </div>
+    );
+  }
 
-	return (
-		<div
-			className={
-				'h-screen flex items-center justify-center text-5xl text-lime-500 font-serif'
-			}
-		>
-			Loading wallet...
-		</div>
-	);
+  return (
+    <div
+      className={
+        "h-screen flex items-center justify-center text-5xl text-lime-500 font-serif"
+      }
+    >
+      Loading wallet...
+    </div>
+  );
 }
