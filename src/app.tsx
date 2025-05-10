@@ -1,34 +1,33 @@
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import NavigationBar from "./components/NavigationBar";
-import HomePage from "./pages/Home";
-import Wallet from "./pages/Wallet";
-import Messages from "./pages/Messages";
-import Profile from "./pages/Profile";
-import Post from "./pages/Post";
-import { Login } from "./pages/Login";
-import { NDKHeadless } from "./ndk";
-import { useEffect, useState } from "preact/hooks";
-import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-hooks";
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+} from 'react-router-dom';
+import NavigationBar from './components/NavigationBar';
+import HomePage from './pages/Home';
+import Wallet from './pages/Wallet';
+import Messages from './pages/Messages';
+import Profile from './pages/Profile';
+import Post from './pages/Post';
+import { Login } from './pages/Login';
+import { NDKHeadless } from './ndk';
+import { useEffect, useState } from 'preact/hooks';
+import { useNDKCurrentUser } from '@nostr-dev-kit/ndk-hooks';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication logic
-  const currentUser = useNDKCurrentUser();
+	const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication logic
+	const currentUser = useNDKCurrentUser();
 
   // Simulate checking login status (replace with real logic)
   useEffect(() => {
     setIsLoggedIn(!!currentUser);
   }, [currentUser]);
   return (
-    <div className={" overscroll-none"}>
+    <div>
       <NDKHeadless />
-
       <Router>
-        <div className="min-h-screen bg-sky-800 text-white">
+        <div className="h-dvh bg-sky-800 text-white">
           {!isLoggedIn ? (
             <Routes>
               <Route path="*" element={<Navigate to="/" />} />

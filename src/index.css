@@ -17,6 +17,7 @@ body {
   padding-right: env(safe-area-inset-right);
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
-  margin: 0; /* Ensure no default margin */
-  height: 100%; /* Ensure the body fills the viewport */
+  background-color: #075985;
+  margin: 0/* Ensure no default margin */;
+  padding: 0
 }
