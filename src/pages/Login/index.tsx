@@ -111,7 +111,7 @@ export function Login() {
   }
 
   return (
-    <div className="relative flex flex-col justify-center items-center h-screen text-center overflow-hidden">
+    <div className="flex flex-col justify-center items-center text-center py-30 bg-sky-800">
       <Suspense
         fallback={<div className="text-center text-gray-500">Loading...</div>}
       >

@@ -6,8 +6,8 @@ import Plus from '../../assets/icons/plus.svg?react';
 import User from '../../assets/icons/user.svg?react';
 export default function NavigationBar() {
 	return (
-		<nav className='fixed bottom-0 w-full bg-sky-800 text-white shadow-md'>
-			<div className=' flex justify-around items-center py-2'>
+		<nav className='fixed pb-5 bottom-0 w-full bg-sky-800 text-white shadow-md'>
+			<div className='flex justify-around items-center py-2'>
 				<NavLink
 					to='/home'
 					className={({ isActive }) =>

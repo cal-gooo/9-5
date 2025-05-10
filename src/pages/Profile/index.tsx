@@ -63,7 +63,7 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-sky-800 p-4">
+    <div className="bg-sky-800 p-4">
       {/* Profile Picture */}
       <div className="flex flex-col items-center mb-6">
         <img

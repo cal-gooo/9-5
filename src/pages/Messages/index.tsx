@@ -17,7 +17,7 @@ export default function Messages() {
   ];
 
   return (
-    <div className="min-h-screen bg-sky-800 p-4">
+    <div className="bg-sky-800 p-4">
       <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">
         Direct Messages
       </h1>
