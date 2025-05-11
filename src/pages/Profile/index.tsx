@@ -1,35 +1,9 @@
 import { useNDKSessionLogout } from "@nostr-dev-kit/ndk-hooks";
-import CryptoJS from "crypto-js";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const logout = useNDKSessionLogout();
-
-  // Method to load the private key from localStorage
-  const loadPrivateKeyFromLocalStorage = (password: string): string | null => {
-    const encryptedKey = localStorage.getItem("encryptedPrivateKey");
-    if (!encryptedKey) {
-      console.warn("No encrypted private key found in localStorage.");
-      return null;
-    }
-
-    try {
-      // Decrypt the private key using the provided password
-      const privateKey = CryptoJS.AES.decrypt(encryptedKey, password);
-
-      if (!privateKey) {
-        throw new Error(
-          "Decryption failed. Invalid password or corrupted data.",
-        );
-      }
-
-      console.log("Private key loaded successfully.");
-      return privateKey.toString(CryptoJS.enc.Utf8);
-    } catch (error) {
-      console.error("Failed to decrypt private key:", error);
-      alert("Failed to decrypt private key. Please check your password.");
-      return null;
-    }
-  };
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -41,17 +15,9 @@ export default function Profile() {
     { id: 1, name: "Edit Profile", action: () => console.log("Edit Profile") },
     {
       id: 2,
-      name: "See private key",
-      action: () => {
-        const password = prompt(
-          "Enter your password to decrypt the private key:",
-        );
-        if (password) {
-          const privateKey = loadPrivateKeyFromLocalStorage(password);
-          if (privateKey) {
-            alert(`Your private key is: ${privateKey}`);
-          }
-        }
+      name: "Keys",
+      action: async () => {
+        navigate("/profile/keys");
       },
     },
     {

@@ -6,7 +6,7 @@ import Plus from "../../assets/icons/plus.svg?react";
 import User from "../../assets/icons/user.svg?react";
 export default function NavigationBar() {
   return (
-    <nav className="fixed pb-5 bottom-0 w-full bg-sky-800 text-white shadow-md">
+    <nav className="fixed pb-3 bottom-0 w-full bg-sky-800 text-white shadow-md">
       <div className="flex justify-around items-center py-2">
         <NavLink
           to="/home"
@@ -33,7 +33,7 @@ export default function NavigationBar() {
         <NavLink
           to="/post"
           className={({ isActive }) =>
-            `flex items-center justify-center w-12 h-12 text-white rounded-xl shadow-lg ${
+            `flex items-center justify-center px-4 py-2 rounded-md shadow-lg ${
               isActive
                 ? "bg-lime-500 text-white"
                 : "hover:bg-lime-600 transition duration-200"
