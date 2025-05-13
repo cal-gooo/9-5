@@ -1,68 +1,68 @@
 import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Navigate,
-} from 'react-router-dom';
-import NavigationBar from './components/NavigationBar';
-import HomePage from './pages/Home';
-import Wallet from './pages/Wallet';
-import Messages from './pages/Messages';
-import Profile from './pages/Profile';
-import Post from './pages/Post';
-import { Login } from './pages/Login';
-import { NDKHeadless } from './ndk';
-import { useEffect, useState } from 'preact/hooks';
-import { useNDKCurrentUser } from '@nostr-dev-kit/ndk-hooks';
-import Keys from './pages/Profile/Keys';
-import EditProfile from './pages/Profile/Edit';
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import NavigationBar from "./components/NavigationBar";
+import HomePage from "./pages/Home";
+import Wallet from "./pages/Wallet";
+import Messages from "./pages/Messages";
+import Profile from "./pages/Profile";
+import Post from "./pages/Post";
+import { Login } from "./pages/Login";
+import { NDKHeadless } from "./ndk";
+import { useEffect, useState } from "preact/hooks";
+import { useNDKCurrentUser } from "@nostr-dev-kit/ndk-hooks";
+import Keys from "./pages/Profile/Keys";
+import EditProfile from "./pages/Profile/Edit";
 
 function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication logic
-	const currentUser = useNDKCurrentUser();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual authentication logic
+  const currentUser = useNDKCurrentUser();
 
-	// Simulate checking login status (replace with real logic)
-	useEffect(() => {
-		setIsLoggedIn(!!currentUser);
-	}, [currentUser]);
+  // Simulate checking login status (replace with real logic)
+  useEffect(() => {
+    setIsLoggedIn(!!currentUser);
+  }, [currentUser]);
 
-	if (!isLoggedIn) {
-		return (
-			<div>
-				<NDKHeadless />
-				<Router>
-					<div className='h-dvh bg-sky-800 text-white'>
-						<Routes>
-							<Route path='*' element={<Navigate to='/' />} />
-							<Route path='/' element={<Login />} />
-						</Routes>
-					</div>
-				</Router>
-			</div>
-		);
-	}
-	return (
-		<div>
-			<NDKHeadless />
-			<Router>
-				<div className='h-dvh bg-sky-800 text-white'>
-					<Routes>
-						<Route path='*' element={<Navigate to='/home' />} />
-						<Route path='/home' element={<HomePage />} />
-						<Route path='/following' element={<div>following</div>} />
-						<Route path='/wallet' element={<Wallet />} />
-						<Route path='/post' element={<Post />} />
-						<Route path='/messages' element={<Messages />} />
-						<Route path='/profile' element={<Profile />} />
-						<Route path='/profile/keys' element={<Keys />} />
-						<Route path='/profile/edit' element={<EditProfile />} />
-					</Routes>
+  if (!isLoggedIn) {
+    return (
+      <div>
+        <NDKHeadless />
+        <Router>
+          <div className="h-dvh bg-sky-800 text-white">
+            <Routes>
+              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="/" element={<Login />} />
+            </Routes>
+          </div>
+        </Router>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <NDKHeadless />
+      <Router>
+        <div className="h-dvh bg-sky-800 text-white">
+          <Routes>
+            <Route path="*" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/following" element={<div>following</div>} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/keys" element={<Keys />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+          </Routes>
 
-					<NavigationBar />
-				</div>
-			</Router>
-		</div>
-	);
+          <NavigationBar />
+        </div>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
